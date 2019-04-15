@@ -19,7 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="21_sound_effects_and_music.cpp" />
+    <ClCompile Include="LApp.cpp" />
+    <ClCompile Include="LButton.cpp" />
+    <ClCompile Include="LTexture.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LApp.h" />
+    <ClInclude Include="LButton.h" />
+    <ClInclude Include="LTexture.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
