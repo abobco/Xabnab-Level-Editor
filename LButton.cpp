@@ -8,6 +8,14 @@ LButton::LButton()
 	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
 }
 
+LButton::LButton(int x, int y)
+{
+	mPosition.x = x;
+	mPosition.y = y;
+
+	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+}
+
 void LButton::setPosition(int x, int y)
 {
 	mPosition.x = x;
@@ -17,7 +25,7 @@ void LButton::setPosition(int x, int y)
 void LButton::handleEvent(SDL_Event* e)
 {
 	//If mouse event happened
-	if (e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP)
+	if (e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP || e->type == SDL_KEYDOWN)
 	{
 	//Check collision of mouse and button
 		//Get mouse position
@@ -81,6 +89,8 @@ void LButton::handleEvent(SDL_Event* e)
 				mCurrentSprite = BUTTON_SPRITE_MOUSE_UP;
 				mouseDrag = false;
 				break;
+			
+
 			}
 		}
 	}

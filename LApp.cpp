@@ -107,7 +107,7 @@ void App::Render() {
 	SDL_RenderClear(Renderer);
 
 
-	for (int i = 0; i < TOTAL_BUTTONS; ++i)
+	for (int i = 0; i < vbuttons.size(); ++i)
 	{
 		SDL_Rect dstrect;
 		dstrect.x = vbuttons[i].getPos()->x;
@@ -145,8 +145,23 @@ int App::Execute(int argc, char* argv[]) {
 	while (Running) {
 		while (SDL_PollEvent(&Event) != 0) {
 
+			//global event loop
 			if (Event.type == SDL_QUIT) Running = false;
-			for (int i = 0; i < TOTAL_BUTTONS; ++i)
+			if (Event.type == SDL_KEYDOWN)
+			{
+					switch (Event.key.keysym.sym)
+					{
+					case SDLK_a:
+						int x, y;
+						SDL_GetMouseState(&x, &y);
+						vbuttons.push_back(LButton(x,y));
+						break;
+					case SDLK_s:
+						vbuttons.pop_back();
+						break;
+					}
+			}
+			for (int i = 0; i < vbuttons.size(); ++i)
 			{
 				vbuttons[i].handleEvent(&Event);
 			}

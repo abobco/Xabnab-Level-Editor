@@ -14,6 +14,8 @@ public:
 	//Initializes internal variables
 	LButton();
 
+	LButton(int x, int y);
+
 	//Sets top left position
 	void setPosition(int x, int y);
 
