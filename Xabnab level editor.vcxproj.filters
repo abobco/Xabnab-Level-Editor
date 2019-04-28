@@ -27,6 +27,12 @@
     <ClCompile Include="LApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stageList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="menuButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LTexture.h">
@@ -36,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stageList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menuButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

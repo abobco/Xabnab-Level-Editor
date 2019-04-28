@@ -7,6 +7,9 @@
 #ifndef __LTEXTURE_H__
 #define __LTEXTURE_H__
 
+#ifndef _SDL_TTF_H
+#define _SDL_TTF_H
+
 class LTexture
 {
 public:
@@ -24,7 +27,7 @@ public:
 
 #ifdef _SDL_TTF_H
 	//Creates image from font string
-	bool loadFromRenderedText(std::string textureText, SDL_Color textColor);
+	bool loadFromRenderedText(std::string textureText, SDL_Color textColor, TTF_Font* Font);
 #endif
 
 	//Deallocates texture
@@ -59,6 +62,9 @@ private:
 	int mHeight;
 
 	SDL_Renderer* gRendptr;
+
+	TTF_Font *Font = NULL;
 };
 
+#endif
 #endif

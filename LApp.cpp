@@ -56,7 +56,7 @@ bool App::Init() {
 				else
 				{
 					//Set buttons
-					for (int i = 0; i < TOTAL_BUTTONS ; i++)
+					for (int i = 0; i < TOTAL_BUTTONS; i++)
 					{
 						//add buttons to vector
 						vbuttons.push_back(LButton());
@@ -74,11 +74,13 @@ bool App::Init() {
 						bSpriteClips[i].h = h;
 					}
 					//Set buttons in corners
+					/*
 					int h = vbuttons[0].BUTTON_HEIGHT, w = vbuttons[0].BUTTON_WIDTH;
 					vbuttons[0].setPosition(0, 0);
 					vbuttons[1].setPosition(WindowWidth - w, 0);
 					vbuttons[2].setPosition(0, WindowHeight - h);
 					vbuttons[3].setPosition(WindowWidth - w, WindowHeight - h);
+					*/
 				}
 				//Initialize renderer color
 				SDL_SetRenderDrawColor(Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -90,6 +92,13 @@ bool App::Init() {
 					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 					success = false;
 				}
+				Font = TTF_OpenFont("stages/OpenSans-Regular.ttf", 12);
+				SDL_Color Stagecolor;
+				Stagecolor.a = 0;
+				Stagecolor.r = 0;
+				Stagecolor.b = 0;
+				Stagecolor.g = 0;
+				stageList.textTexture.loadFromRenderedText("garbage", Stagecolor, Font);
 			}
 		}
 	}
@@ -116,10 +125,23 @@ void App::Render() {
 		dstrect.w = vbuttons[i].BUTTON_WIDTH;
 
 		SDL_RenderCopyEx(Renderer, gButtonSpriteSheetTexture.getTexture(), &bSpriteClips[vbuttons[i].mCurrentSprite], &dstrect, 0, NULL, SDL_FLIP_NONE);
+
+		SDL_SetRenderDrawColor(Renderer, 0x6D, 0x28, 0x28, 0xFF);
+		SDL_RenderDrawRects(Renderer, vbuttons[i].edgeBoxes, 4);
+		SDL_RenderFillRects(Renderer, vbuttons[i].edgeBoxes, 4);
 	}
+	/*
+	for (int i = 0; i < stageList.vButtons.size(); ++i)
+	{
+		SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
+		SDL_RenderDrawRect(Renderer, &stageList.vButtons[i].mRect);
+		SDL_RenderFillRect(Renderer, &stageList.vButtons[i].mRect);
 
+		SDL_RenderCopyEx(Renderer, stageList.textTexture.getTexture(), 0, &stageList.vButtons[i].mRect, 0, 0, SDL_FLIP_NONE);
+	}
+	*/
 	SDL_RenderPresent(Renderer);
-
+	
 }
 
 void App::Cleanup() {
@@ -147,23 +169,31 @@ int App::Execute(int argc, char* argv[]) {
 
 			//global event loop
 			if (Event.type == SDL_QUIT) Running = false;
-			if (Event.type == SDL_KEYDOWN)
+
+
+			else
 			{
+				if (Event.type == SDL_KEYDOWN)
+				{
 					switch (Event.key.keysym.sym)
 					{
 					case SDLK_a:
 						int x, y;
 						SDL_GetMouseState(&x, &y);
-						vbuttons.push_back(LButton(x,y));
+						vbuttons.push_back(LButton(x, y));
 						break;
-					case SDLK_s:
+					case SDLK_x:
 						vbuttons.pop_back();
 						break;
+					case SDLK_s:
+						saveToFile();
+						break;
 					}
-			}
-			for (int i = 0; i < vbuttons.size(); ++i)
-			{
-				vbuttons[i].handleEvent(&Event);
+				}
+				for (int i = 0; i < vbuttons.size(); ++i)
+				{
+					vbuttons[i].handleEvent(&Event);
+				}
 			}
 		}
 
@@ -178,6 +208,22 @@ int App::Execute(int argc, char* argv[]) {
 
 	return 1;
 }
+
+//=============================================================================//
+void App::saveToFile()
+{
+	outfile.open("output.txt");
+	outfile << "Size: " << vbuttons.size() << std::endl;
+	for (int i = 0; i < vbuttons.size(); i++)
+	{
+		outfile << vbuttons[i].mRect.x << ",";
+		outfile << vbuttons[i].mRect.y << ",";
+		outfile << vbuttons[i].mRect.w << ",";
+		outfile << vbuttons[i].mRect.h << std::endl;
+	}
+	outfile.close();
+}
+
 
 //==============================================================================
 App* App::GetInstance() { return &App::Instance; }

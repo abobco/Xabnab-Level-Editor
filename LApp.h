@@ -7,6 +7,8 @@
 #include "LTexture.h"
 #include <vector>
 #include "LButton.h"
+#include <fstream>
+#include "stageList.h"
 
 
 
@@ -18,13 +20,14 @@ private:
 	static App Instance;
 
 	bool Running = true;
+	bool inMenu = true;
 
 	SDL_Window* Window = NULL;
 	SDL_Renderer* Renderer = NULL;
 	SDL_Surface* PrimarySurface = NULL;
 	
 	const int BUTTON_SPRITE_TOTAL = 5;
-	int TOTAL_BUTTONS = 4;
+	int TOTAL_BUTTONS = 1;
 
 	//SDL_Texture* xTexture = NULL;
 
@@ -37,8 +40,11 @@ private:
 
 	//vector of buttons
 	std::vector<LButton> vbuttons;
+	std::ofstream outfile;
 
+	stageList stageList;
 
+	TTF_Font *Font = NULL;
 private:
 	App();
 
@@ -53,6 +59,8 @@ private:
 
 	// Render loop (draw)
 	void Render();
+
+	void saveToFile();
 
 	// Free up resources
 	void Cleanup();

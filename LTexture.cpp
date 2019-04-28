@@ -108,13 +108,13 @@ bool LTexture::loadFromFile(std::string path, SDL_Renderer *mRenderer)
 }
 
 #ifdef _SDL_TTF_H
-bool LTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
+bool LTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor, TTF_Font* Font)
 {
 	//Get rid of preexisting texture
 	free();
-
+	//Font = TTF_OpenFont("stages/OpenSans-Regular.ttf", 12);
 	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+	SDL_Surface* textSurface = TTF_RenderText_Solid(Font, textureText.c_str(), textColor);
 	if (textSurface == NULL)
 	{
 		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());

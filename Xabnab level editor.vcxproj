@@ -23,11 +23,15 @@
     <ClCompile Include="LButton.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menuButton.cpp" />
+    <ClCompile Include="stageList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LApp.h" />
     <ClInclude Include="LButton.h" />
     <ClInclude Include="LTexture.h" />
+    <ClInclude Include="menuButton.h" />
+    <ClInclude Include="stageList.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
