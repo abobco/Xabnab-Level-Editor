@@ -9,6 +9,7 @@
 #include "LButton.h"
 #include <fstream>
 #include "stageList.h"
+#include "MainMenu.h"
 
 
 
@@ -21,10 +22,12 @@ private:
 
 	bool Running = true;
 	bool inMenu = true;
+	bool loadflag = false;
 
 	SDL_Window* Window = NULL;
 	SDL_Renderer* Renderer = NULL;
 	SDL_Surface* PrimarySurface = NULL;
+
 	
 	const int BUTTON_SPRITE_TOTAL = 5;
 	int TOTAL_BUTTONS = 1;
@@ -45,6 +48,10 @@ private:
 	stageList stageList;
 
 	TTF_Font *Font = NULL;
+
+	//main menu object pointer
+	MainMenu* menu = nullptr;
+
 private:
 	App();
 
@@ -64,6 +71,9 @@ private:
 
 	// Free up resources
 	void Cleanup();
+
+	// Load stage from button press
+	void loadRects();
 
 
 public:

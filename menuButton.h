@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <string>
+#include "LTexture.h"
 
 #ifndef __MENUBUTTON_H__
 #define __MENUBUTTON_H__
@@ -17,7 +18,16 @@ protected:
 	//Button constants
 	int BUTTON_WIDTH = 300;
 	int BUTTON_HEIGHT = 100;
+	std::string buttonText;
 
+	LTexture textTexture;
+
+	TTF_Font *Font = NULL;
+
+protected:
+	void loadTexture(SDL_Renderer* Renderer);
+public:
+	
 
 public:
 	//change to true when clicked
@@ -27,13 +37,15 @@ public:
 
 	menuButton();
 
-	menuButton(int x, int y);
+	menuButton(int x, int y, std::string text);
 
 	void handleEvent(SDL_Event* e);
 
 	void setPosition(int x, int y);
 
 	bool checkMouse(int x, int y);
+
+	std::string getText() { return buttonText; }
 
 };
 

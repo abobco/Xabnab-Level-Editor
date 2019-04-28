@@ -23,6 +23,7 @@
     <ClCompile Include="LButton.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="menuButton.cpp" />
     <ClCompile Include="stageList.cpp" />
   </ItemGroup>
@@ -30,6 +31,7 @@
     <ClInclude Include="LApp.h" />
     <ClInclude Include="LButton.h" />
     <ClInclude Include="LTexture.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="menuButton.h" />
     <ClInclude Include="stageList.h" />
   </ItemGroup>

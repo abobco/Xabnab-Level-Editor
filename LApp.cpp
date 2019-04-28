@@ -92,13 +92,19 @@ bool App::Init() {
 					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 					success = false;
 				}
+				if (TTF_Init() < 0) {
+					// Error handling code
+					printf("SDL_TTF could not initialize! SDL_TTF Error: %s\n", TTF_GetError());
+				}
 				Font = TTF_OpenFont("stages/OpenSans-Regular.ttf", 12);
 				SDL_Color Stagecolor;
 				Stagecolor.a = 0;
 				Stagecolor.r = 0;
 				Stagecolor.b = 0;
 				Stagecolor.g = 0;
-				stageList.textTexture.loadFromRenderedText("garbage", Stagecolor, Font);
+				stageList.textTexture.loadFromRenderedText(Renderer,stageList.vStages[0], Stagecolor, Font);
+
+				menu = new MainMenu();
 			}
 		}
 	}
@@ -115,31 +121,38 @@ void App::Render() {
 	SDL_SetRenderDrawColor(Renderer, 0xDE, 0xB8, 0xFF, 0xFF);
 	SDL_RenderClear(Renderer);
 
-
-	for (int i = 0; i < vbuttons.size(); ++i)
+	//check if in menu
+	if (menu->exit)
 	{
-		SDL_Rect dstrect;
-		dstrect.x = vbuttons[i].getPos()->x;
-		dstrect.y = vbuttons[i].getPos()->y;
-		dstrect.h = vbuttons[i].BUTTON_HEIGHT;
-		dstrect.w = vbuttons[i].BUTTON_WIDTH;
+		//draw all stage rects
+		for (int i = 0; i < vbuttons.size(); ++i)
+		{
+			SDL_Rect dstrect;
+			dstrect.x = vbuttons[i].getPos()->x;
+			dstrect.y = vbuttons[i].getPos()->y;
+			dstrect.h = vbuttons[i].BUTTON_HEIGHT;
+			dstrect.w = vbuttons[i].BUTTON_WIDTH;
 
-		SDL_RenderCopyEx(Renderer, gButtonSpriteSheetTexture.getTexture(), &bSpriteClips[vbuttons[i].mCurrentSprite], &dstrect, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(Renderer, gButtonSpriteSheetTexture.getTexture(), &bSpriteClips[vbuttons[i].mCurrentSprite], &dstrect, 0, NULL, SDL_FLIP_NONE);
 
-		SDL_SetRenderDrawColor(Renderer, 0x6D, 0x28, 0x28, 0xFF);
-		SDL_RenderDrawRects(Renderer, vbuttons[i].edgeBoxes, 4);
-		SDL_RenderFillRects(Renderer, vbuttons[i].edgeBoxes, 4);
+			SDL_SetRenderDrawColor(Renderer, 0x6D, 0x28, 0x28, 0xFF);
+			SDL_RenderDrawRects(Renderer, vbuttons[i].edgeBoxes, 4);
+			SDL_RenderFillRects(Renderer, vbuttons[i].edgeBoxes, 4);
+		}
 	}
-	/*
-	for (int i = 0; i < stageList.vButtons.size(); ++i)
+	//draw menu buttons
+	else
 	{
-		SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
-		SDL_RenderDrawRect(Renderer, &stageList.vButtons[i].mRect);
-		SDL_RenderFillRect(Renderer, &stageList.vButtons[i].mRect);
+		for (int i = 0; i < stageList.vButtons.size(); ++i)
+		{
+			SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
+			SDL_RenderDrawRect(Renderer, &stageList.vButtons[i].mRect);
+			SDL_RenderFillRect(Renderer, &stageList.vButtons[i].mRect);
 
-		SDL_RenderCopyEx(Renderer, stageList.textTexture.getTexture(), 0, &stageList.vButtons[i].mRect, 0, 0, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(Renderer, stageList.textTexture.getTexture(), 0, &stageList.vButtons[i].mRect, 0, 0, SDL_FLIP_NONE);
+		}
 	}
-	*/
+
 	SDL_RenderPresent(Renderer);
 	
 }
@@ -170,6 +183,13 @@ int App::Execute(int argc, char* argv[]) {
 			//global event loop
 			if (Event.type == SDL_QUIT) Running = false;
 
+			if (!menu->exit)
+				menu->handleEvent(&Event);
+			else if (menu->exit && !loadflag)
+			{
+				loadRects();
+				loadflag = true;
+			}
 
 			else
 			{
@@ -222,6 +242,52 @@ void App::saveToFile()
 		outfile << vbuttons[i].mRect.h << std::endl;
 	}
 	outfile.close();
+}
+//==============================================================================
+void App::loadRects()
+{
+	std::string filename = menu->filename;
+	std::ifstream iFile;
+	iFile.open(filename);
+	std::string line;
+	std::string sSize;
+	getline(iFile, line);
+	for (int i = 0; i < line.size(); i++)
+	{
+		if (isdigit(line[i]))
+			sSize += line[i];
+	}
+	int size = stoi(sSize);
+	SDL_Rect* nRect;
+	for (int i = 0; i < size; i++)
+	{
+		nRect = new SDL_Rect;
+		int coordinates[4];
+
+		getline(iFile, line);
+		int count = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			char currChar;
+			string sNum;
+			int num;
+			while (line[count] != ',' && count != line.size() )
+			{
+				sNum += line[count];
+				count++;
+			}
+			num = stoi(sNum);
+			coordinates[i] = num;
+			count++;
+		}
+
+		nRect->x = coordinates[0];
+		nRect->y = coordinates[1];
+		nRect->w = coordinates[2];
+		nRect->h = coordinates[3];
+
+		vbuttons.push_back(LButton(nRect));
+	}
 }
 
 

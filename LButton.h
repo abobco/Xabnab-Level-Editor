@@ -33,6 +33,8 @@ public:
 
 	LButton(int x, int y);
 
+	LButton(SDL_Rect* rect);
+
 	//Sets top left position
 	void setPosition(int x, int y);
 

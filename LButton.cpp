@@ -28,6 +28,19 @@ LButton::LButton(int x, int y)
 	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
 }
 
+LButton::LButton(SDL_Rect* rect)
+{
+	mRect.x = mPosition.x = rect->x;
+	mRect.y = mPosition.y = rect->y;
+
+	BUTTON_WIDTH = mRect.w = rect->w;
+	BUTTON_HEIGHT = mRect.h = rect->h;
+
+	setEdges();
+
+	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+}
+
 void LButton::setPosition(int x, int y)
 {
 	mPosition.x = x;

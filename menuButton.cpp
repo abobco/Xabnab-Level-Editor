@@ -7,11 +7,12 @@ menuButton::menuButton()
 	mRect.h = BUTTON_HEIGHT;
 	mRect.w = BUTTON_WIDTH;
 }
-menuButton::menuButton(int x, int y)
+menuButton::menuButton(int x, int y, std::string text)
 {
 	setPosition(x, y);
 	mRect.h = BUTTON_HEIGHT;
 	mRect.w = BUTTON_WIDTH;
+	buttonText = text;
 }
 void menuButton::handleEvent(SDL_Event* e)
 {
@@ -26,11 +27,7 @@ void menuButton::handleEvent(SDL_Event* e)
 		//Check if mouse is in button
 		bool inside = checkMouse(x, y);
 
-		if (!inside)
-		{
-
-		}
-		else
+		if (inside)
 		{
 			//BUTTON EVENT CODE
 			switch (e->type)
@@ -76,6 +73,21 @@ bool menuButton::checkMouse(int x, int y)
 	}
 	return inside;
 }
+
+void menuButton::loadTexture(SDL_Renderer* Renderer)
+{
+	Font = TTF_OpenFont("stages/OpenSans-Regular.ttf", 12);
+	SDL_Color fontcolor;
+	fontcolor.a = 0;
+	fontcolor.r = 0;
+	fontcolor.b = 0;
+	fontcolor.g = 0;
+	textTexture.loadFromRenderedText(Renderer, buttonText, fontcolor, Font);
+
+}
+
+
+
 
 
 //==============================================================================================//
