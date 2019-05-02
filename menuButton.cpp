@@ -128,11 +128,7 @@ bool menuButton::render(SDL_Renderer* Renderer)
 	SDL_RenderDrawRect(Renderer, &mRect);
 	SDL_RenderFillRect(Renderer, &mRect);
 
-	if (!SDL_RenderCopyEx(Renderer, ttfTexture, 0, &mRect, 0, 0, SDL_FLIP_NONE))
-	{
-		printf("failed to render button! SDL Error: %s\n", SDL_GetError());
-		success = false;
-	}
+	SDL_RenderCopyEx(Renderer, ttfTexture, 0, &mRect, 0, 0, SDL_FLIP_NONE);
 	return success;
 }
 
