@@ -39,6 +39,7 @@ bool App::Init() {
 		}
 		else
 		{
+			//SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN);
 			//Create renderer for window
 			Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED);
 			if (Renderer == NULL)
@@ -55,17 +56,19 @@ bool App::Init() {
 				}
 				else
 				{
+					/*
 					//Set buttons
 					for (int i = 0; i < TOTAL_BUTTONS; i++)
 					{
 						//add buttons to vector
 						vbuttons.push_back(LButton());
 					}
+					*/
 					//Set sprites
 					for (int i = 0; i < BUTTON_SPRITE_TOTAL; ++i)
 					{
 						//get button dimensions
-						int h = vbuttons[0].BUTTON_HEIGHT, w = vbuttons[0].BUTTON_WIDTH;
+						int h = 200, w = 300;
 
 						//set sprite clip rects
 						bSpriteClips[i].x = 0;
@@ -73,14 +76,7 @@ bool App::Init() {
 						bSpriteClips[i].w = w;
 						bSpriteClips[i].h = h;
 					}
-					//Set buttons in corners
-					/*
-					int h = vbuttons[0].BUTTON_HEIGHT, w = vbuttons[0].BUTTON_WIDTH;
-					vbuttons[0].setPosition(0, 0);
-					vbuttons[1].setPosition(WindowWidth - w, 0);
-					vbuttons[2].setPosition(0, WindowHeight - h);
-					vbuttons[3].setPosition(WindowWidth - w, WindowHeight - h);
-					*/
+
 				}
 				//Initialize renderer color
 				SDL_SetRenderDrawColor(Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -92,19 +88,16 @@ bool App::Init() {
 					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 					success = false;
 				}
+
+				//Init Font
 				if (TTF_Init() < 0) {
 					// Error handling code
 					printf("SDL_TTF could not initialize! SDL_TTF Error: %s\n", TTF_GetError());
 				}
-				Font = TTF_OpenFont("stages/OpenSans-Regular.ttf", 12);
-				SDL_Color Stagecolor;
-				Stagecolor.a = 0;
-				Stagecolor.r = 0;
-				Stagecolor.b = 0;
-				Stagecolor.g = 0;
-				stageList.textTexture.loadFromRenderedText(Renderer,stageList.vStages[0], Stagecolor, Font);
 
-				menu = new MainMenu();
+				//stageList.textTexture.loadFromRenderedText(Renderer,stageList.vStages[0], Stagecolor, Font);
+
+				menu = new MainMenu(Renderer);
 			}
 		}
 	}
@@ -140,17 +133,10 @@ void App::Render() {
 			SDL_RenderFillRects(Renderer, vbuttons[i].edgeBoxes, 4);
 		}
 	}
-	//draw menu buttons
+	//draw Menu
 	else
 	{
-		for (int i = 0; i < stageList.vButtons.size(); ++i)
-		{
-			SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
-			SDL_RenderDrawRect(Renderer, &stageList.vButtons[i].mRect);
-			SDL_RenderFillRect(Renderer, &stageList.vButtons[i].mRect);
-
-			SDL_RenderCopyEx(Renderer, stageList.textTexture.getTexture(), 0, &stageList.vButtons[i].mRect, 0, 0, SDL_FLIP_NONE);
-		}
+		menu->render(Renderer);
 	}
 
 	SDL_RenderPresent(Renderer);
@@ -182,6 +168,10 @@ int App::Execute(int argc, char* argv[]) {
 
 			//global event loop
 			if (Event.type == SDL_QUIT) Running = false;
+			if (Event.type == SDL_KEYDOWN && Event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				Running = false;
+			}
 
 			if (!menu->exit)
 				menu->handleEvent(&Event);
@@ -208,6 +198,10 @@ int App::Execute(int argc, char* argv[]) {
 					case SDLK_s:
 						saveToFile();
 						break;
+					case SDLK_ESCAPE:
+						Running = false;
+						break;
+
 					}
 				}
 				for (int i = 0; i < vbuttons.size(); ++i)
@@ -268,7 +262,6 @@ void App::loadRects()
 		int count = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			char currChar;
 			string sNum;
 			int num;
 			while (line[count] != ',' && count != line.size() )

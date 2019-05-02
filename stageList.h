@@ -21,7 +21,6 @@ private:
 public:
 	stageList();
 	vector<string> vStages;
-	vector<menuButton> vButtons;
 	void loadFile();
 	void newStage(string filename);
 	void removeItem(int index);

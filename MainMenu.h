@@ -3,6 +3,7 @@
 #include "menuButton.h"
 #include "stageList.h"
 #include <vector>
+#include <SDL.h>
 
 #ifndef __MAINMENU_H__
 #define __MAINMENU_H__
@@ -15,14 +16,16 @@ private:
 
 public:
 	stageList stages;
-	//vector<menuButton> buttons;
+	vector<menuButton> buttons;
 
 public:
-	MainMenu();
+	MainMenu(SDL_Renderer* Renderer);
 
 	void handleEvent(SDL_Event* e);
 
 	std::string getFileName() { return filename; }
+
+	bool render(SDL_Renderer* Renderer);
 
 	bool exit = false;
 

@@ -22,6 +22,8 @@ protected:
 
 	LTexture textTexture;
 
+	SDL_Texture* ttfTexture = NULL;
+
 	TTF_Font *Font = NULL;
 
 protected:
@@ -44,6 +46,10 @@ public:
 	void setPosition(int x, int y);
 
 	bool checkMouse(int x, int y);
+
+	bool loadText(SDL_Renderer* Renderer);
+
+	bool render(SDL_Renderer* Renderer);
 
 	std::string getText() { return buttonText; }
 

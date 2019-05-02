@@ -41,6 +41,9 @@ private:
 	SDL_Rect bSpriteClips[5];
 	LTexture gButtonSpriteSheetTexture;
 
+	//text texture
+	SDL_Texture* textTexture = nullptr;
+
 	//vector of buttons
 	std::vector<LButton> vbuttons;
 	std::ofstream outfile;

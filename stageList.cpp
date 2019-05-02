@@ -4,13 +4,6 @@ stageList::stageList()
 {
 	//load text file of stage filenames
 	loadFile();
-	
-	//make a set of buttons for each stage
-	for (int i = 0; i < vStages.size(); i++)
-	{
-		vButtons.push_back(menuButton(300, 100 + 100 * i,vStages[i]));
-	}
-	//make a scroll bar
 
 }
 

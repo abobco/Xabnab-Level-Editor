@@ -86,6 +86,56 @@ void menuButton::loadTexture(SDL_Renderer* Renderer)
 
 }
 
+bool menuButton::loadText(SDL_Renderer* Renderer)
+{
+	bool success = true;
+	//Init Font
+	if (TTF_Init() < 0) {
+		// Error handling code
+		printf("SDL_TTF could not initialize! SDL_TTF Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	Font = TTF_OpenFont("stages/pixelart.ttf", 72);
+	if (Font == NULL)
+	{
+		printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	SDL_Color Stagecolor;
+	Stagecolor.a = 0;
+	Stagecolor.r = 160;
+	Stagecolor.b = 0;
+	Stagecolor.g = 0;
+
+	SDL_Surface* surface = TTF_RenderText_Solid(Font, buttonText.c_str(), Stagecolor);
+	if (surface == NULL)
+	{
+		printf("Failed to create surface! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+
+	ttfTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+
+	SDL_FreeSurface(surface);
+
+	return success;
+}
+
+bool menuButton::render(SDL_Renderer* Renderer)
+{
+	bool success = true;
+	SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
+	SDL_RenderDrawRect(Renderer, &mRect);
+	SDL_RenderFillRect(Renderer, &mRect);
+
+	if (!SDL_RenderCopyEx(Renderer, ttfTexture, 0, &mRect, 0, 0, SDL_FLIP_NONE))
+	{
+		printf("failed to render button! SDL Error: %s\n", SDL_GetError());
+		success = false;
+	}
+	return success;
+}
+
 
 
 
