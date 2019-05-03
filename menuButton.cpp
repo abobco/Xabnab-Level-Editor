@@ -3,9 +3,10 @@
 
 menuButton::menuButton()
 {
-	setPosition(0, 0);
+	setPosition(300, 300);
 	mRect.h = BUTTON_HEIGHT;
 	mRect.w = BUTTON_WIDTH;
+	buttonText = "NEW STAGE";
 }
 menuButton::menuButton(int x, int y, std::string text)
 {
@@ -95,7 +96,7 @@ bool menuButton::loadText(SDL_Renderer* Renderer)
 		printf("SDL_TTF could not initialize! SDL_TTF Error: %s\n", TTF_GetError());
 		success = false;
 	}
-	Font = TTF_OpenFont("stages/pixelart.ttf", 72);
+	Font = TTF_OpenFont("stages/fonts/VT323.ttf", 100);
 	if (Font == NULL)
 	{
 		printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -139,48 +140,13 @@ bool menuButton::render(SDL_Renderer* Renderer)
 //==============================================================================================//
 
 //newStageButtonFunctions
-/*
+
 newStageButton::newStageButton()
 {
-	setPosition(300, 0);
 	mRect.h = BUTTON_HEIGHT;
 	mRect.w = BUTTON_WIDTH;
+	setPosition(WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2, 80);
+	buttonText = "NEW STAGE";
 }
 
-std::string newStageButton::getFileName()
-{
 
-	extern char *text;
-	extern char *composition;
-	extern Sint32 cursor;
-	extern Sint32 selection_len;
-	SDL_bool done = SDL_FALSE;
-
-	SDL_StartTextInput();
-	while (!done) {
-		SDL_Event event;
-		if (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT:
-				/* Quit */
-		//		done = SDL_TRUE;
-	//			break;
-		//	case SDL_TEXTINPUT:
-				/* Add new text onto the end of our text */
-	//			strcat(text, event.text.text);
-		//		break;
-	//		case SDL_TEXTEDITING:
-				/*
-				Update the composition text.
-				Update the cursor position.
-				Update the selection length (if any).
-				*/
-		//		composition = event.edit.text;
-		//		cursor = event.edit.start;
-		//		selection_len = event.edit.length;
-		//		break;
-//			}
-//		}
-//	}
-//	return composition;
-//}

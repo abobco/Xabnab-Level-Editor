@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 #include <string>
 #include "LTexture.h"
+#include "macros.h"
 
 #ifndef __MENUBUTTON_H__
 #define __MENUBUTTON_H__
@@ -53,14 +54,15 @@ public:
 
 	std::string getText() { return buttonText; }
 
+	void changeText(std::string text) { buttonText = text; }
 };
 
-/*
+
 class newStageButton : public menuButton
 {
 public:
 	newStageButton();
 	std::string getFileName();
 };
-*/
+
 #endif

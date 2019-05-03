@@ -12,7 +12,8 @@ MainMenu::MainMenu(SDL_Renderer* Renderer)
 		buttons.push_back(*button);
 	}
 
-
+	NSbutton.loadText(Renderer);
+	mRenderer = Renderer;
 }
 
 void MainMenu::handleEvent(SDL_Event* e)
@@ -29,6 +30,16 @@ void MainMenu::handleEvent(SDL_Event* e)
 		}
 	}
 
+	NSbutton.handleEvent(e);
+	if (NSbutton.pressed && KBhandler == nullptr)
+	{
+		NSbutton.pressed = false;
+		KBhandler = new KeyboardHandler(mRenderer);
+	}
+	if (KBhandler != nullptr)
+	{
+		KBhandler->handleInput(e);
+	}
 }
 
 bool MainMenu::render(SDL_Renderer* Renderer)
@@ -40,6 +51,13 @@ bool MainMenu::render(SDL_Renderer* Renderer)
 		{
 			success = false;
 		}
+	}
+	if (!NSbutton.render(Renderer))
+		success = false;
+
+	if ( KBhandler!=nullptr )
+	{
+		KBhandler->textDisplay.render(Renderer);
 	}
 	return success;
 }

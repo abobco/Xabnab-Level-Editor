@@ -4,6 +4,7 @@
 #include "stageList.h"
 #include <vector>
 #include <SDL.h>
+#include "KeyboardHandler.h"
 
 #ifndef __MAINMENU_H__
 #define __MAINMENU_H__
@@ -17,6 +18,9 @@ private:
 public:
 	stageList stages;
 	vector<menuButton> buttons;
+	newStageButton NSbutton;
+	KeyboardHandler* KBhandler = nullptr;
+	SDL_Renderer* mRenderer = NULL;
 
 public:
 	MainMenu(SDL_Renderer* Renderer);
