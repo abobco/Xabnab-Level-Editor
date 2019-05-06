@@ -84,7 +84,7 @@ private:
 	long int stableEdgeX = 0;
 	long int stableEdgeY = 0;
 
-	int Resize_State = 0;
+	int ResizeState = 0;
 	
 
 };

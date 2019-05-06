@@ -1,4 +1,5 @@
 #include "MainMenu.h"
+#include <time.h>
 
 MainMenu::MainMenu(SDL_Renderer* Renderer)
 {
@@ -66,7 +67,20 @@ bool MainMenu::render(SDL_Renderer* Renderer)
 
 	if ( KBhandler!=nullptr )
 	{
-		KBhandler->textDisplay.render(Renderer);
+		SDL_Color textbutton;
+		textbutton.a = 0;
+		textbutton.r = 160;
+		textbutton.b = 0;
+		textbutton.g = 0;
+		KBhandler->textDisplay.render(Renderer, textbutton);
+
+		srand(time(NULL));
+		int option = rand() % 2;
+		menuButton instructions(WINDOW_WIDTH / 2 + 155, 30, "just type a name and press enter ya dingus");
+		instructions.loadText(Renderer);
+		instructions.textRect.h = instructions.mRect.h *= 0.4;
+		instructions.textRect.w = instructions.mRect.w *= 0.5;
+		instructions.render(Renderer);
 	}
 	return success;
 }

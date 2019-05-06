@@ -3,8 +3,12 @@
 KeyboardHandler::KeyboardHandler(SDL_Renderer* Renderer, int size)
 {
 	//Enable text input 
+	textColor.a = 0;
+	textColor.r = 160;
+	textColor.b = 180;
+	textColor.g = 180;
 	textDisplay = menuButton(WINDOW_WIDTH / 2 + 155, 80, "stage" + std::to_string(size +1));
-	textDisplay.loadText(Renderer);
+	textDisplay.loadText(Renderer, textColor);
 	SDL_StartTextInput();
 
 	kRenderer = Renderer;
@@ -48,7 +52,7 @@ bool KeyboardHandler::handleInput(SDL_Event* e)
 	if (renderText)
 	{
 		textDisplay.changeText(inputText);
-		textDisplay.loadText(kRenderer);
+		textDisplay.loadText(kRenderer,textColor);
 	}
 	return renderText;
 }

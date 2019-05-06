@@ -51,7 +51,11 @@ public:
 
 	bool loadText(SDL_Renderer* Renderer);
 
+	bool loadText(SDL_Renderer* Renderer, SDL_Color stagecolor);
+
 	bool render(SDL_Renderer* Renderer);
+
+	bool render(SDL_Renderer* Renderer, SDL_Color buttonColor);
 
 	std::string getText() { return buttonText; }
 

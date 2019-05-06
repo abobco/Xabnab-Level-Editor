@@ -56,6 +56,8 @@ private:
 	//main menu object pointer
 	MainMenu* menu = nullptr;
 
+	menuButton* controlBox = nullptr;
+
 private:
 	App();
 

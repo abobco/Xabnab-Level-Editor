@@ -12,6 +12,8 @@ class KeyboardHandler
 {
 protected:
 	SDL_Renderer* kRenderer = NULL;
+
+	SDL_Color textColor;
 public:
 	std::string inputText = "input text";
 

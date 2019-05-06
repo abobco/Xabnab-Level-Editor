@@ -59,65 +59,82 @@ void LButton::handleEvent(SDL_Event* e)
 		SDL_GetMouseState(&x, &y);
 		SDL_GetRelativeMouseState(&oldX, &oldY);
 
-		//Check if mouse is in button
-		bool inside = true;
-
-		//Mouse is left of the button
-		if (x < mPosition.x)
+		if (resizeDrag)
 		{
-			inside = false;
-		}
-		//Mouse is right of the button
-		else if (x > mPosition.x + BUTTON_WIDTH)
-		{
-			inside = false;
-		}
-		//Mouse above the button
-		else if (y < mPosition.y)
-		{
-			inside = false;
-		}
-		//Mouse below the button
-		else if (y > mPosition.y + BUTTON_HEIGHT)
-		{
-			inside = false;
-		}
-		int ResizeState = checkResize(x, y);
 			HandleResize(e, ResizeState);
-		//Mouse is outside button
-		if (!inside && !mouseDrag)
-		{
-			mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
 		}
-		//Mouse is inside button
+
 		else
 		{
-			//BUTTON EVENT CODE
-			switch (e->type)
+			ResizeState = checkResize(x, y);
+			if (ResizeState != 0 && e->type == SDL_MOUSEBUTTONDOWN)
 			{
-			case SDL_MOUSEMOTION:
-				mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
-				if (mouseDrag == true)
-				{
-					mCurrentSprite = BUTTON_SPRITE_DRAG;
-					setPosition(x - relX, y- relY);
-					setEdges();
-				}
-				break;
-
-			case SDL_MOUSEBUTTONDOWN:
-				mCurrentSprite = BUTTON_SPRITE_MOUSE_DOWN;
-				mouseDrag = true;
+				resizeDrag = true;
 				relX = x - mPosition.x;
 				relY = y - mPosition.y;
-				break;
+				stableEdgeY = mPosition.y + BUTTON_HEIGHT;
+				stableEdgeX = mPosition.x + BUTTON_WIDTH;
+				return;
+			}
+			//Check if mouse is in button
+			bool inside = true;
 
-			case SDL_MOUSEBUTTONUP:
-				mCurrentSprite = BUTTON_SPRITE_MOUSE_UP;
-				mouseDrag = false;
-				break;
-			
+			//Mouse is left of the button
+			if (x < mPosition.x)
+			{
+				inside = false;
+			}
+			//Mouse is right of the button
+			else if (x > mPosition.x + BUTTON_WIDTH)
+			{
+				inside = false;
+			}
+			//Mouse above the button
+			else if (y < mPosition.y)
+			{
+				inside = false;
+			}
+			//Mouse below the button
+			else if (y > mPosition.y + BUTTON_HEIGHT)
+			{
+				inside = false;
+			}
 
+			//Mouse is outside button
+			if (!inside && !mouseDrag)
+			{
+				mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+			}
+			//Mouse is inside button
+			else
+			{
+				//BUTTON EVENT CODE
+				switch (e->type)
+				{
+				case SDL_MOUSEMOTION:
+					mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
+					if (mouseDrag == true)
+					{
+						mCurrentSprite = BUTTON_SPRITE_DRAG;
+						setPosition(x - relX, y - relY);
+						setEdges();
+					}
+					break;
+
+				case SDL_MOUSEBUTTONDOWN:
+					mCurrentSprite = BUTTON_SPRITE_MOUSE_DOWN;
+					mouseDrag = true;
+					relX = x - mPosition.x;
+					relY = y - mPosition.y;
+					break;
+
+				case SDL_MOUSEBUTTONUP:
+					mCurrentSprite = BUTTON_SPRITE_MOUSE_UP;
+					mouseDrag = false;
+					break;
+
+
+				}
 			}
 		}
 	}
@@ -217,15 +234,6 @@ void LButton::HandleResize(SDL_Event* e, int ResizeState)
 			setEdges();
 		
 		}
-		break;
-	case SDL_MOUSEBUTTONDOWN:
-		mCurrentSprite = BUTTON_SPRITE_MOUSE_DOWN;
-		resizeDrag = true;
-		relX = x - mPosition.x;
-		relY = y - mPosition.y;
-		stableEdgeY = mPosition.y + BUTTON_HEIGHT;
-		stableEdgeX = mPosition.x + BUTTON_WIDTH;
-
 		break;
 
 	case SDL_MOUSEBUTTONUP:
