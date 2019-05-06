@@ -17,8 +17,11 @@ public:
 
 	menuButton textDisplay;
 
+	bool done = false;
+	bool firstinput = true;
+
 public:
-	KeyboardHandler(SDL_Renderer* Renderer);
+	KeyboardHandler(SDL_Renderer* Renderer, int size);
 	
 	bool handleInput(SDL_Event* e);
 };

@@ -132,6 +132,12 @@ void App::Render() {
 			SDL_RenderDrawRects(Renderer, vbuttons[i].edgeBoxes, 4);
 			SDL_RenderFillRects(Renderer, vbuttons[i].edgeBoxes, 4);
 		}
+
+		menuButton controlBox(640, 0, "Backspace to return to menu, S to save, A, to add rectangles, X to delete rectanges");
+		controlBox.loadText(Renderer);
+		controlBox.mRect.h = controlBox.textRect.h *= 0.4;
+		controlBox.mRect.w = controlBox.textRect.w *= 0.4;
+		controlBox.render(Renderer);
 	}
 	//draw Menu
 	else
@@ -201,12 +207,19 @@ int App::Execute(int argc, char* argv[]) {
 					case SDLK_ESCAPE:
 						Running = false;
 						break;
-
+					case SDLK_BACKSPACE:
+						menu = new MainMenu(Renderer);
+						vbuttons.clear();
+						loadflag = false;
+						break;
 					}
 				}
-				for (int i = 0; i < vbuttons.size(); ++i)
+				if (menu->exit)
 				{
+					for (int i = 0; i < vbuttons.size(); ++i)
+					{
 					vbuttons[i].handleEvent(&Event);
+					}
 				}
 			}
 		}
@@ -226,7 +239,7 @@ int App::Execute(int argc, char* argv[]) {
 //=============================================================================//
 void App::saveToFile()
 {
-	outfile.open("output.txt");
+	outfile.open(menu->filename);
 	outfile << "Size: " << vbuttons.size() << std::endl;
 	for (int i = 0; i < vbuttons.size(); i++)
 	{
@@ -245,41 +258,43 @@ void App::loadRects()
 	iFile.open(filename);
 	std::string line;
 	std::string sSize;
-	getline(iFile, line);
-	for (int i = 0; i < line.size(); i++)
+	if(getline(iFile, line))
 	{
-		if (isdigit(line[i]))
-			sSize += line[i];
-	}
-	int size = stoi(sSize);
-	SDL_Rect* nRect;
-	for (int i = 0; i < size; i++)
-	{
-		nRect = new SDL_Rect;
-		int coordinates[4];
-
-		getline(iFile, line);
-		int count = 0;
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < line.size(); i++)
 		{
-			string sNum;
-			int num;
-			while (line[count] != ',' && count != line.size() )
+			if (isdigit(line[i]))
+				sSize += line[i];
+		}
+		int size = std::stoi(sSize);
+		SDL_Rect* nRect;
+		for (int i = 0; i < size; i++)
+		{
+			nRect = new SDL_Rect;
+			int coordinates[4];
+
+			getline(iFile, line);
+			int count = 0;
+			for (int i = 0; i < 4; i++)
 			{
-				sNum += line[count];
+				string sNum;
+				int num;
+				while (line[count] != ',' && count != line.size())
+				{
+					sNum += line[count];
+					count++;
+				}
+				num = stoi(sNum);
+				coordinates[i] = num;
 				count++;
 			}
-			num = stoi(sNum);
-			coordinates[i] = num;
-			count++;
+
+			nRect->x = coordinates[0];
+			nRect->y = coordinates[1];
+			nRect->w = coordinates[2];
+			nRect->h = coordinates[3];
+
+			vbuttons.push_back(LButton(nRect));
 		}
-
-		nRect->x = coordinates[0];
-		nRect->y = coordinates[1];
-		nRect->w = coordinates[2];
-		nRect->h = coordinates[3];
-
-		vbuttons.push_back(LButton(nRect));
 	}
 }
 

@@ -30,13 +30,14 @@ protected:
 protected:
 	void loadTexture(SDL_Renderer* Renderer);
 public:
-	
+	int textWidth, textHeight;
 
 public:
 	//change to true when clicked
 	bool pressed = false;
 
 	SDL_Rect mRect;
+	SDL_Rect textRect;
 
 	menuButton();
 

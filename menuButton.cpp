@@ -96,7 +96,7 @@ bool menuButton::loadText(SDL_Renderer* Renderer)
 		printf("SDL_TTF could not initialize! SDL_TTF Error: %s\n", TTF_GetError());
 		success = false;
 	}
-	Font = TTF_OpenFont("stages/fonts/VT323.ttf", 100);
+	Font = TTF_OpenFont("stages/fonts/VT323.ttf", 60);
 	if (Font == NULL)
 	{
 		printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -108,7 +108,16 @@ bool menuButton::loadText(SDL_Renderer* Renderer)
 	Stagecolor.b = 0;
 	Stagecolor.g = 0;
 
-	SDL_Surface* surface = TTF_RenderText_Solid(Font, buttonText.c_str(), Stagecolor);
+	std::string txt;
+	if (buttonText[0] == 's' && buttonText[6] == '/')
+	{
+		for (int i = 7; i < int(buttonText.size()) - 4; i++)
+		{
+			txt += buttonText[i];
+		}
+	}
+	else txt = buttonText;
+	SDL_Surface* surface = TTF_RenderText_Solid(Font, txt.c_str(), Stagecolor);
 	if (surface == NULL)
 	{
 		printf("Failed to create surface! SDL_ttf Error: %s\n", TTF_GetError());
@@ -116,6 +125,16 @@ bool menuButton::loadText(SDL_Renderer* Renderer)
 	}
 
 	ttfTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+
+	
+	SDL_QueryTexture(ttfTexture, NULL, NULL, &textWidth, &textHeight);
+	textRect.x = mRect.x;
+	textRect.y = mRect.y;
+	textRect.w = textWidth;
+	textRect.h = mRect.h;
+
+		mRect.w = textWidth;
+
 
 	SDL_FreeSurface(surface);
 
@@ -125,11 +144,13 @@ bool menuButton::loadText(SDL_Renderer* Renderer)
 bool menuButton::render(SDL_Renderer* Renderer)
 {
 	bool success = true;
-	SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
-	SDL_RenderDrawRect(Renderer, &mRect);
-	SDL_RenderFillRect(Renderer, &mRect);
 
-	SDL_RenderCopyEx(Renderer, ttfTexture, 0, &mRect, 0, 0, SDL_FLIP_NONE);
+	SDL_SetRenderDrawColor(Renderer, 0x8F, 0x99, 0xAA, 0xFF);
+	SDL_RenderFillRect(Renderer, &mRect);
+	SDL_SetRenderDrawColor(Renderer, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderDrawRect(Renderer, &mRect);
+
+	SDL_RenderCopyEx(Renderer, ttfTexture, 0, &textRect, 0, 0, SDL_FLIP_NONE);
 	return success;
 }
 

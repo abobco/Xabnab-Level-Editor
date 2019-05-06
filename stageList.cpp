@@ -20,8 +20,13 @@ void stageList::loadFile()
 void stageList::newStage(string filename)
 {
 	vStages.push_back(filename);
-	listOF.open(filename, ios_base::app);
+	listOF.open("stages/stageList.txt", std::ofstream::app );
 	listOF << filename << endl;
+	listOF.close();
+
+	listOF.open(filename);
+
+	listOF << "Size: 1\n100, 100, 100, 100\n";
 	listOF.close();
 }
 void stageList::removeItem(int index)

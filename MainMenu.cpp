@@ -5,7 +5,7 @@ MainMenu::MainMenu(SDL_Renderer* Renderer)
 	int count = int(stages.vStages.size());
 	for (int i = 0; i < count; i++)
 	{
-		menuButton* button = new menuButton(600, 200 * (i + 1), stages.vStages.at(i).c_str());
+		menuButton* button = new menuButton(WINDOW_WIDTH/2 - 150, 100+ 110 * (i + 1), stages.vStages.at(i).c_str());
 
 		button->loadText(Renderer);
 
@@ -13,6 +13,7 @@ MainMenu::MainMenu(SDL_Renderer* Renderer)
 	}
 
 	NSbutton.loadText(Renderer);
+
 	mRenderer = Renderer;
 }
 
@@ -26,6 +27,7 @@ void MainMenu::handleEvent(SDL_Event* e)
 			filename = stages.vStages[i];
 			loadStage = true;
 			exit = true;
+			buttons[i].pressed = false;
 			break;
 		}
 	}
@@ -34,11 +36,18 @@ void MainMenu::handleEvent(SDL_Event* e)
 	if (NSbutton.pressed && KBhandler == nullptr)
 	{
 		NSbutton.pressed = false;
-		KBhandler = new KeyboardHandler(mRenderer);
+		KBhandler = new KeyboardHandler(mRenderer, int(stages.vStages.size()));
 	}
-	if (KBhandler != nullptr)
+	if (KBhandler != nullptr && KBhandler->done != true)
 	{
 		KBhandler->handleInput(e);
+	}
+	if (KBhandler != nullptr && KBhandler->done == true)
+	{
+		filename = KBhandler->inputText;
+		filename = "stages/" + filename + ".txt";
+		stages.newStage(filename);
+		exit = true;
 	}
 }
 

@@ -1,1 +1,3 @@
-output.txt
+stages/stage1.txt
+stages/stage2.txt
+stages/ayyy.txt

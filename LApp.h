@@ -23,6 +23,7 @@ private:
 	bool Running = true;
 	bool inMenu = true;
 	bool loadflag = false;
+	bool nStageflag = false;
 
 	SDL_Window* Window = NULL;
 	SDL_Renderer* Renderer = NULL;

@@ -17,8 +17,12 @@ private:
 
 public:
 	stageList stages;
+	
+	//menuButton controls;
 	vector<menuButton> buttons;
 	newStageButton NSbutton;
+
+
 	KeyboardHandler* KBhandler = nullptr;
 	SDL_Renderer* mRenderer = NULL;
 

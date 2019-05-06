@@ -1,0 +1,17 @@
+
+					//Handle copy
+					else if (e->key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
+					{
+						SDL_SetClipboardText(inputText.c_str());
+					}
+					//Handle paste
+					else if (e->key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+					{
+						inputText = SDL_GetClipboardText();
+						renderText = true;
+					}
+
+//Not copy or pasting
+						
+if (!((e->text.text[0] == 'c' || e->text.text[0] == 'C') && (e->text.text[0] == 'v' || e->text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
+						{
