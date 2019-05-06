@@ -99,7 +99,7 @@ bool App::Init() {
 
 				menu = new MainMenu(Renderer);
 
-				controlBox = new menuButton(640, 0, "Backspace to return to menu, S to save, A, to add rectangles, X to delete rectanges");
+				controlBox = new menuButton(640, 0, "Backspace to return to menu, S to save, A to add rectangles, X to delete rectanges");
 				controlBox->loadText(Renderer);
 				controlBox->mRect.h = controlBox->textRect.h *= 0.4;
 				controlBox->mRect.w = controlBox->textRect.w *= 0.4;
