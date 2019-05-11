@@ -15,7 +15,7 @@ protected:
 
 	SDL_Color textColor;
 public:
-	std::string inputText = "input text";
+	std::string inputText;
 
 	menuButton textDisplay;
 

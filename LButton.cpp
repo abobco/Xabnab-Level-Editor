@@ -6,6 +6,7 @@ LButton::LButton()
 	mPosition.x = 0;
 	mPosition.y = 0;
 	
+	glowRect.setColor(240, 240, 40);
 	//set clickboxes for edges for box resizing
 	setEdges();
 
@@ -22,7 +23,7 @@ LButton::LButton(int x, int y)
 	mRect.y = mPosition.y;
 	mRect.w = BUTTON_WIDTH;
 	mRect.h = BUTTON_HEIGHT;
-
+	glowRect.setColor(240, 240, 40);
 	setEdges();
 
 	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
@@ -35,7 +36,7 @@ LButton::LButton(SDL_Rect* rect)
 
 	BUTTON_WIDTH = mRect.w = rect->w;
 	BUTTON_HEIGHT = mRect.h = rect->h;
-
+	glowRect.setColor(240, 240, 40);
 	setEdges();
 
 	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
@@ -104,15 +105,18 @@ void LButton::handleEvent(SDL_Event* e)
 			if (!inside && !mouseDrag)
 			{
 				mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+				mouseHover = false;
 			}
 			//Mouse is inside button
 			else
 			{
+				mouseHover = true;
 				//BUTTON EVENT CODE
 				switch (e->type)
 				{
 				case SDL_MOUSEMOTION:
 					mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
+					
 					if (mouseDrag == true)
 					{
 						mCurrentSprite = BUTTON_SPRITE_DRAG;
@@ -153,6 +157,9 @@ void LButton::setEdges()
 	mRect.w = BUTTON_WIDTH;
 	mRect.h = BUTTON_HEIGHT;
 
+	glowRect.setDimensions(BUTTON_WIDTH + 10, BUTTON_HEIGHT + 10);
+	glowRect.setPosition(mPosition.x - 5, mPosition.y - 5);
+
 	//top & bottom
 	for (int i = 0; i < 2; i++)
 	{
@@ -169,6 +176,22 @@ void LButton::setEdges()
 		edgeBoxes[i].w = 20;
 		edgeBoxes[i].h = 20;
 	}
+
+	//corners
+	for (int i = 0; i < 4; i++)
+	{
+		cornerBoxes[i].w = cornerBoxes[i].h = 20;
+	}
+	for (int i = 0; i <2; i++)
+	{
+		cornerBoxes[i].x = mPosition.x - 10;
+		cornerBoxes[i].y = mPosition.y - 10 + BUTTON_HEIGHT * i;
+	}
+	for (int i = 2; i < 4; i++)
+	{
+		cornerBoxes[i].x = mPosition.x - 10 + BUTTON_WIDTH;
+		cornerBoxes[i].y = mPosition.y - 10 + BUTTON_HEIGHT * (i - 2);
+	}
 }
 
 int LButton::checkResize(int x, int y)
@@ -179,6 +202,7 @@ int LButton::checkResize(int x, int y)
 	for (int i = 0; i < 4; i++)
 	{
 		if (SDL_PointInRect(&mousePoint, &edgeBoxes[i]))
+		{
 			switch (i)
 			{
 			case 0:
@@ -194,6 +218,25 @@ int LButton::checkResize(int x, int y)
 				return RIGHT_RESIZE;
 				break;
 			}
+		}
+		if (SDL_PointInRect(&mousePoint, &cornerBoxes[i]))
+		{
+			switch (i)
+			{
+			case 0:
+				return TLC_RESIZE;
+				break;
+			case 1:
+				return BLC_RESIZE;
+				break;
+			case 2:
+				return TRC_RESIZE;
+				break;
+			case 3:
+				return BRC_RESIZE;
+				break;
+			}
+		}
 
 	}
 	return NO_RESIZE;
@@ -211,25 +254,52 @@ void LButton::HandleResize(SDL_Event* e, int ResizeState)
 			switch (ResizeState)
 			{
 			case TOP_RESIZE:
-				mRect.h = stableEdgeY -(y-relY);
+				mRect.h = stableEdgeY -y;
 				BUTTON_HEIGHT = mRect.h;
-				mPosition.y = mRect.y = y + relY;
+				mPosition.y = mRect.y = y;
 				break;
 			case BOT_RESIZE:
 				mRect.h = y - mPosition.y;
 				BUTTON_HEIGHT = mRect.h;
-				//mPosition.y = mRect.y = y - 8 - BUTTON_HEIGHT;
 				break;
 			case LEFT_RESIZE:
-				mRect.w = stableEdgeX - (x-relX);
+				mRect.w = stableEdgeX - x;
 				BUTTON_WIDTH = mRect.w;
-				mPosition.x = mRect.x = x + relX;
+				mPosition.x = mRect.x = x;
 				break;
 			case RIGHT_RESIZE:
 				mRect.w = x - mPosition.x;
 				BUTTON_WIDTH = mRect.w;
-				//mPosition.x = mRect.x = x - 8 - BUTTON_WIDTH;
 				break;
+			case TLC_RESIZE:
+				mRect.h = stableEdgeY - y;
+				BUTTON_HEIGHT = mRect.h;
+				mPosition.y = mRect.y = y;
+				mRect.w = stableEdgeX - x;
+				BUTTON_WIDTH = mRect.w;
+				mPosition.x = mRect.x = x;
+				break;
+			case BLC_RESIZE:
+				mRect.h = y - mPosition.y;
+				BUTTON_HEIGHT = mRect.h;
+				mRect.w = stableEdgeX - x;
+				BUTTON_WIDTH = mRect.w;
+				mPosition.x = mRect.x = x;
+				break;
+			case TRC_RESIZE:
+				mRect.h = stableEdgeY -y;
+				BUTTON_HEIGHT = mRect.h;
+				mPosition.y = mRect.y = y;
+				mRect.w = x - mPosition.x;
+				BUTTON_WIDTH = mRect.w;
+				break;
+			case BRC_RESIZE:
+				mRect.h = y - mPosition.y;
+				BUTTON_HEIGHT = mRect.h;
+				mRect.w = x - mPosition.x;
+				BUTTON_WIDTH = mRect.w;
+				break;
+
 			}
 			setEdges();
 		

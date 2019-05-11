@@ -10,6 +10,7 @@
 #include <fstream>
 #include "stageList.h"
 #include "MainMenu.h"
+#include "ToolPanel.h"
 
 
 
@@ -24,6 +25,7 @@ private:
 	bool inMenu = true;
 	bool loadflag = false;
 	bool nStageflag = false;
+	bool showcontrols = true;
 
 	SDL_Window* Window = NULL;
 	SDL_Renderer* Renderer = NULL;
@@ -35,7 +37,7 @@ private:
 
 	//SDL_Texture* xTexture = NULL;
 
-	static const int WindowWidth = 1440;
+	static const int WindowWidth = 1840;
 	static const int WindowHeight = 800;
 
 	//Mouse button sprites
@@ -57,6 +59,8 @@ private:
 	MainMenu* menu = nullptr;
 
 	menuButton* controlBox = nullptr;
+
+	ToolPanel* rectpanel = nullptr;
 
 private:
 	App();

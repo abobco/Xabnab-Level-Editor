@@ -2,12 +2,13 @@
 
 KeyboardHandler::KeyboardHandler(SDL_Renderer* Renderer, int size)
 {
+	inputText = "stage" + std::to_string(size + 1);
 	//Enable text input 
 	textColor.a = 0;
 	textColor.r = 160;
 	textColor.b = 180;
 	textColor.g = 180;
-	textDisplay = menuButton(WINDOW_WIDTH / 2 + 155, 80, "stage" + std::to_string(size +1));
+	textDisplay = menuButton(WINDOW_WIDTH / 2 + 155, 80, inputText);
 	textDisplay.loadText(Renderer, textColor);
 	SDL_StartTextInput();
 

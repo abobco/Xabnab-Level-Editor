@@ -1,3 +1,7 @@
 stages/stage1.txt
 stages/stage2.txt
 stages/ayyy.txt
+stages/xabblefield.txt
+stages/whatever.txt
+stages/waow.txt
+stages/stage7.txt

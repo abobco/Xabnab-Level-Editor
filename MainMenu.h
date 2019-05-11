@@ -13,15 +13,17 @@ class MainMenu
 {
 private:
 	bool loadStage = false;
-	bool newStage = false;
+	bool newStage = false;;
+	bool showStageList = false;
 
 public:
 	stageList stages;
 	
 	//menuButton controls;
-	vector<menuButton> buttons;
-	newStageButton NSbutton;
-
+	//vector<menuButton> buttons;
+	menuButton NSbutton;
+	menuButton stageListButton;
+	menuButton* instructions = nullptr;
 
 	KeyboardHandler* KBhandler = nullptr;
 	SDL_Renderer* mRenderer = NULL;
@@ -34,6 +36,8 @@ public:
 	std::string getFileName() { return filename; }
 
 	bool render(SDL_Renderer* Renderer);
+
+	void setStageList() { showStageList = true; }
 
 	bool exit = false;
 

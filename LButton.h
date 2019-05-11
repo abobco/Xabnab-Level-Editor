@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <string>
+#include "Rectangle.h"
 
 #ifndef __LBUTTON_H__
 #define __LBUTTON_H__
@@ -17,7 +18,11 @@ public:
 		TOP_RESIZE = 1,
 		BOT_RESIZE = 2,
 		LEFT_RESIZE = 3,
-		RIGHT_RESIZE = 4
+		RIGHT_RESIZE = 4,
+		TLC_RESIZE = 5,
+		TRC_RESIZE = 6,
+		BLC_RESIZE = 7,
+		BRC_RESIZE = 8
 	};
 	enum LButtonSprite
 	{
@@ -62,14 +67,17 @@ public:
 
 	SDL_Rect edgeBoxes[4];
 
-	;
+	SDL_Rect cornerBoxes[4];
 
 	//Button constants
 	int BUTTON_WIDTH = 300;
 	int BUTTON_HEIGHT = 200;
 	const int TOTAL_BUTTONS = 4;
 
+	bool toolHover = false;
+	bool mouseHover = false;
 
+	Rectangle glowRect;
 
 private:
 	//Top left position
@@ -85,6 +93,7 @@ private:
 	long int stableEdgeY = 0;
 
 	int ResizeState = 0;
+	
 	
 
 };

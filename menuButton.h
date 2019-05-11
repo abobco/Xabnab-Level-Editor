@@ -5,6 +5,7 @@
 #include <string>
 #include "LTexture.h"
 #include "macros.h"
+#include "Rectangle.h"
 
 #ifndef __MENUBUTTON_H__
 #define __MENUBUTTON_H__
@@ -14,7 +15,12 @@ class menuButton
 protected:
 	//position and dimensions on the screen
 	SDL_Point mPosition;
+	
+	SDL_Color DefaultColor;
+	SDL_Color HoldColor;
+	SDL_Color HoverColor;
 
+	Rectangle hoverBox;
 
 	//Button constants
 	int BUTTON_WIDTH = 300;
@@ -28,20 +34,27 @@ protected:
 	TTF_Font *Font = NULL;
 
 protected:
-	void loadTexture(SDL_Renderer* Renderer);
+	//void loadTexture(SDL_Renderer* Renderer);
 public:
 	int textWidth, textHeight;
-
-public:
 	//change to true when clicked
 	bool pressed = false;
+	bool hovering = false;
+	bool held = false;
+	Rectangle displayRect;
 
 	SDL_Rect mRect;
 	SDL_Rect textRect;
 
+public:
+
+
+
 	menuButton();
 
 	menuButton(int x, int y, std::string text);
+
+	menuButton(Rectangle oRect, std::string text, SDL_Renderer* Renderer);
 
 	void handleEvent(SDL_Event* e);
 
@@ -60,6 +73,9 @@ public:
 	std::string getText() { return buttonText; }
 
 	void changeText(std::string text) { buttonText = text; }
+
+	void setDimensions(int w, int h);
+	void setDimensions(int w, int h, SDL_Renderer* Renderer);
 };
 
 

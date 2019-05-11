@@ -26,7 +26,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="menuButton.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="stageList.cpp" />
+    <ClCompile Include="ToolPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyboardHandler.h" />
@@ -36,7 +38,9 @@
     <ClInclude Include="macros.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="menuButton.h" />
+    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="stageList.h" />
+    <ClInclude Include="ToolPanel.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

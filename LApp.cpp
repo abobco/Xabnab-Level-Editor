@@ -99,10 +99,11 @@ bool App::Init() {
 
 				menu = new MainMenu(Renderer);
 
-				controlBox = new menuButton(640, 0, "Backspace to return to menu, S to save, A to add rectangles, X to delete rectanges");
+				controlBox = new menuButton(400, 0, "Backspace to return to menu, S to save, A to add rectangles, X to delete rectanges, H to disable this panel");
 				controlBox->loadText(Renderer);
 				controlBox->mRect.h = controlBox->textRect.h *= 0.4;
 				controlBox->mRect.w = controlBox->textRect.w *= 0.4;
+				controlBox->displayRect.setDimensions(controlBox->textRect.w, controlBox->textRect.h);
 			}
 		}
 	}
@@ -131,15 +132,25 @@ void App::Render() {
 			dstrect.h = vbuttons[i].BUTTON_HEIGHT;
 			dstrect.w = vbuttons[i].BUTTON_WIDTH;
 
-			SDL_RenderCopyEx(Renderer, gButtonSpriteSheetTexture.getTexture(), &bSpriteClips[vbuttons[i].mCurrentSprite], &dstrect, 0, NULL, SDL_FLIP_NONE);
+			//SDL_RenderCopyEx(Renderer, gButtonSpriteSheetTexture.getTexture(), &bSpriteClips[vbuttons[i].mCurrentSprite], &dstrect, 0, NULL, SDL_FLIP_NONE);
+			if (vbuttons[i].toolHover || vbuttons[i].mouseHover)
+			{
+				vbuttons[i].glowRect.render(Renderer);
+			}
+
+			SDL_SetRenderDrawColor(Renderer, 190, 100, 100, 99);
+			SDL_RenderFillRect(Renderer, &dstrect);
 
 			SDL_SetRenderDrawColor(Renderer, 0x6D, 0x28, 0x28, 0xFF);
 			SDL_RenderDrawRects(Renderer, vbuttons[i].edgeBoxes, 4);
 			SDL_RenderFillRects(Renderer, vbuttons[i].edgeBoxes, 4);
+			SDL_RenderFillRects(Renderer, vbuttons[i].cornerBoxes, 4);
 		}
 
+		rectpanel->render();
 
-		controlBox->render(Renderer);
+		if (showcontrols)
+			controlBox->render(Renderer);
 	}
 	//draw Menu
 	else
@@ -182,11 +193,15 @@ int App::Execute(int argc, char* argv[]) {
 			}
 
 			if (!menu->exit)
-				menu->handleEvent(&Event);
-			else if (menu->exit && !loadflag)
 			{
-				loadRects();
-				loadflag = true;
+				menu->handleEvent(&Event);
+				if (menu->exit)
+				{
+					loadRects();
+					rectpanel = new ToolPanel(Renderer, vbuttons);
+
+
+				}
 			}
 
 			else
@@ -199,18 +214,28 @@ int App::Execute(int argc, char* argv[]) {
 						int x, y;
 						SDL_GetMouseState(&x, &y);
 						vbuttons.push_back(LButton(x, y));
+						rectpanel->addButton(&vbuttons[vbuttons.size() - 1]);
 						break;
 					case SDLK_x:
-						vbuttons.pop_back();
+						if (vbuttons.size() > 0)
+						{
+							vbuttons.pop_back();
+							rectpanel->removeButton();
+						}
 						break;
 					case SDLK_s:
 						saveToFile();
+						break;
+					case SDLK_h:
+						showcontrols = !showcontrols;
 						break;
 					case SDLK_ESCAPE:
 						Running = false;
 						break;
 					case SDLK_BACKSPACE:
 						menu = new MainMenu(Renderer);
+						rectpanel = nullptr;
+						menu->setStageList();
 						vbuttons.clear();
 						loadflag = false;
 						break;
@@ -221,6 +246,8 @@ int App::Execute(int argc, char* argv[]) {
 					for (int i = 0; i < vbuttons.size(); ++i)
 					{
 					vbuttons[i].handleEvent(&Event);
+
+					rectpanel->handleEvent(&Event);
 					}
 				}
 			}
