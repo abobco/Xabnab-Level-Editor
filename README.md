@@ -1,6 +1,6 @@
 # Xabnab-Level-Editor
 
-#### Level Editor for an unfinished SDL 2D platformer
+Level Editor for an unfinished SDL 2D platformer
 
 # Required linked Development Libraries 
 #### SDL2 https://www.libsdl.org/download-2.0.php
