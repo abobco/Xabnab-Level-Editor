@@ -4,9 +4,12 @@ OBJS = *.cpp
 #CC specifies which compiler we're using
 CC = g++
 
+#makes it compile to 32 bit binaries
+CXXFLAGS=-m32
+
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
-COMPILER_FLAGS = -w -fpermissive -m32
+COMPILER_FLAGS = -w -fpermissive
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
@@ -16,4 +19,4 @@ OBJ_NAME = XNLevelEditor
 
 #This is the target that compiles our executable
 all : $(OBJS)
-	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+	$(CC) $(CXXFLAGS) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
