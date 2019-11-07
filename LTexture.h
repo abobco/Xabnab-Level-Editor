@@ -1,14 +1,13 @@
 #pragma once
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 
 #ifndef __LTEXTURE_H__
 #define __LTEXTURE_H__
 
-#ifndef _SDL_TTF_H
-#define _SDL_TTF_H
+
 
 class LTexture
 {
@@ -25,10 +24,9 @@ public:
 	//Loads image at specified path
 	bool loadFromFile(std::string path, SDL_Renderer *mRenderer);
 
-#ifdef _SDL_TTF_H
 	//Creates image from font string
 	bool loadFromRenderedText(SDL_Renderer* Renderer, std::string textureText, SDL_Color textColor, TTF_Font* Font);
-#endif
+
 
 	//Deallocates texture
 	void free();
@@ -66,5 +64,4 @@ private:
 	TTF_Font *Font = NULL;
 };
 
-#endif
 #endif

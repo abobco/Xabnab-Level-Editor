@@ -3,7 +3,7 @@
 #include "menuButton.h"
 #include "stageList.h"
 #include <vector>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "KeyboardHandler.h"
 
 #ifndef __MAINMENU_H__

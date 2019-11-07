@@ -5,3 +5,4 @@ stages/xabblefield.txt
 stages/whatever.txt
 stages/waow.txt
 stages/stage7.txt
+stages/stage8.txt

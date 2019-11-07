@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #ifndef __RECTANGLE_H__
 #define __RECTANGLE_H__
