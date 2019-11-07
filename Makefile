@@ -12,7 +12,7 @@ CXXFLAGS=-m32
 COMPILER_FLAGS = -w -fpermissive
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = XNLevelEditor
